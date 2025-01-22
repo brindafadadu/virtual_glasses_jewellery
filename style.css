@@ -1,0 +1,16 @@
+
+  body {
+      font-family: Arial, sans-serif;
+      text-align:centre;
+      margin-top:50px;
+      background-color: rgb(68, 237, 214);
+      display: flex;
+      justify-content: center;
+    
+    }
+  
+  #video, #canvas{
+    width: 640px;
+    height: 480px;
+    position: absolute;
+  }
