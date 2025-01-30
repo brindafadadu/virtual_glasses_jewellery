@@ -1,0 +1,22 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "start.js",
+  "scripts": {
+    "start":"node start.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brindafadadu/saree_webcam.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brindafadadu/saree_webcam/issues"
+  },
+  "homepage": "https://github.com/brindafadadu/saree_webcam#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
