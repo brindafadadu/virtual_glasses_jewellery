@@ -32,11 +32,11 @@ glassesImage.src = 'eyeglass.png'; // Replace with your glasses image URL
                     //angle reset
                     const dx= (leftEye.x +rightEye.x) * canvasElement.width;
                     const dy = (leftEye.y + rightEye.y) * canvasElement.height;
-                    const rotation = Math.atan2(dy/dx);
+                    //const rotation = Math.atan2(dy/dx);
 
                     // Draw glasses
-                    canvasCtx.translate(centerX, centerY);
-                    canvasCtx.rotate(rotation);
+                    //canvasCtx.translate(centerX, centerY);
+                    
                     canvasCtx.drawImage(
                         glassesImage,
                         centerX-glassesWidth/2,
