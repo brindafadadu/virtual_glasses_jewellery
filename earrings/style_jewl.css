@@ -1,4 +1,4 @@
-/* 
+
 body {
     font-family: Arial, sans-serif;
     text-align:centre;
@@ -23,9 +23,9 @@ body {
     justify-content: center;
   
   }
-  /* 
+  
   video, canvas{
   width: 640px;
   height: 480px;
   position: absolute;
-  } */
+  }

@@ -1,10 +1,3 @@
-//234	Left ear (near the helix)
-// 454	Right ear (near the helix)
-// 127	Left ear tip
-// 356	Right ear tip
-// 132	Left ear base (near jawline)
-// 361	Right ear base (near jawline)
-
 const videoElement = document.getElementById('video');
 const canvasElement = document.getElementById('canvas');
 const canvasCtx = canvasElement.getContext('2d');
@@ -12,49 +5,51 @@ const canvasCtx = canvasElement.getContext('2d');
 const jewlImage = new Image();
 jewlImage.src = 'earrings.png'; 
 
-    function onResults(results) {
-        canvasCtx.save();
-       
-        canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-        canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+function onResults(results) {
+    canvasCtx.save();
+    canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+    canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
 
-            if (results.multiFaceLandmarks) {
-                for (const landmarks of results.multiFaceLandmarks) {
-                    // left ear
-                    const leftear_base=landmarks[132];
-                    const rightear_base=landmarks[361];
-                    
-                    //x and y coordinates, overlay img
-                    const xleft=leftear_base.x*canvasElement.width;
-                    const yleft=leftear_base.y*canvasElement.height;
+    if (results.multiFaceLandmarks) {
+        for (const landmarks of results.multiFaceLandmarks) {
+            // Use ear base landmarks
+            const leftEarBase = landmarks[58];
+            const rightEarBase = landmarks[288];
 
-                    const xright=rightear_base.x*canvasElement.width;
-                    const yright=rightear_base.y*canvasElement.height;
+            // Calculate earring size and position
+            const earringSize = Math.min(canvasElement.width, canvasElement.height) * 0.12; // 10% of smaller dimension
 
-                    //img size
-                    const img_size=Math.abs(xright-xleft)/4;
-                    //angle reset
+            // Increase horizontal separation between earrings
+            const horizontalSeparation = earringSize * 0.37; // Adjust this multiplier to increase/decrease gap
 
+            // Left earring - positioned on left ear base with additional horizontal offset
+            const leftX = leftEarBase.x * canvasElement.width - (earringSize / 2) - horizontalSeparation;
+            const leftY = leftEarBase.y * canvasElement.height - (earringSize / 2);
 
-                    canvasCtx.drawImage(
-                        jewlImage,
-                       (xleft-img_size)/2,
-                       (yleft-img_size)/2,
-                       img_size,
-                       img_size
-                    );
-                    
-                    canvasCtx.drawImage(
-                        jewlImage,
-                       (xright-img_size)/2,
-                       (yright-img_size)/2,
-                       img_size,
-                       img_size
-                    );
-                    canvasCtx.restore();
-                   
+            // Right earring - positioned on right ear base with additional horizontal offset
+            const rightX = rightEarBase.x * canvasElement.width - (earringSize / 2) + horizontalSeparation;
+            const rightY = rightEarBase.y * canvasElement.height - (earringSize / 2);
+
+            // Draw left earring
+            canvasCtx.drawImage(
+                jewlImage,
+                leftX,
+                leftY,
+                earringSize,
+                earringSize
+            );
+
+            // Draw right earring
+            canvasCtx.drawImage(
+                jewlImage,
+                rightX,
+                rightY,
+                earringSize,
+                earringSize
+            );
         }
     }
+    canvasCtx.restore();
 }
 
 const faceMesh = new FaceMesh({
