@@ -5,6 +5,9 @@ const canvasCtx = canvasElement.getContext('2d');
 const jewlImage = new Image();
 jewlImage.src = 'earrings.png'; 
 
+let inti_noseX = null;
+
+
 function onResults(results) {
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
@@ -13,11 +16,20 @@ function onResults(results) {
     if (results.multiFaceLandmarks) {
         for (const landmarks of results.multiFaceLandmarks) {
             // Use ear base landmarks
-            const leftEarBase = landmarks[58];
-            const rightEarBase = landmarks[288];
+            const leftEarBase = landmarks[132];
+            const rightEarBase = landmarks[361];
+            const nose = landmarks[1];
+
+            if (inti_noseX == null) {
+                inti_noseX = nose.x;
+            }
+
+            let noseOffset = nose.x - inti_noseX;
+            let headturn = 0.04 // sensitivity limit
+
 
             // Calculate earring size and position
-            const earringSize = Math.min(canvasElement.width, canvasElement.height) * 0.12; // 10% of smaller dimension
+            const earringSize = Math.min(canvasElement.width, canvasElement.height) * 0.13; 
 
             // Increase horizontal separation between earrings
             const horizontalSeparation = earringSize * 0.37; // Adjust this multiplier to increase/decrease gap
@@ -30,8 +42,31 @@ function onResults(results) {
             const rightX = rightEarBase.x * canvasElement.width - (earringSize / 2) + horizontalSeparation;
             const rightY = rightEarBase.y * canvasElement.height - (earringSize / 2);
 
-            // Draw left earring
-            canvasCtx.drawImage(
+            if(noseOffset < -headturn){
+                //head turned right so hide the left earring
+                canvasCtx.drawImage(
+                    jewlImage,
+                    rightX,
+                    rightY,
+                    earringSize,
+                    earringSize
+                );
+            }
+
+            else if (noseOffset>headturn){
+                //head turned left so hide the right earring
+                canvasCtx.drawImage(
+                    jewlImage,
+                    leftX,
+                    leftY,
+                    earringSize,
+                    earringSize
+                );
+            }
+
+            // head facing forward draw both earrings
+            else{ 
+                canvasCtx.drawImage(
                 jewlImage,
                 leftX,
                 leftY,
@@ -40,13 +75,14 @@ function onResults(results) {
             );
 
             // Draw right earring
-            canvasCtx.drawImage(
-                jewlImage,
-                rightX,
-                rightY,
-                earringSize,
-                earringSize
-            );
+                canvasCtx.drawImage(
+                    jewlImage,
+                    rightX,
+                    rightY,
+                    earringSize,
+                    earringSize
+                );
+            }
         }
     }
     canvasCtx.restore();
@@ -76,3 +112,5 @@ const camera = new Camera(videoElement, {
 });
 
 camera.start();
+
+//the earrings are appearing s bit lower than the ear lobe need to lessen the sensitivity, increase the size a bit and check exact location
