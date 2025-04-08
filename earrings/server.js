@@ -1,9 +1,24 @@
 require('dotenv').config();
 const express = require('express');
+const {exec} = require('child_process');
 const path = require('path');
 const cors = require('cors');
 
 const app = express();
+
+const inputPath = path.join(__dirname, 'public', 'earrings2.png');
+const outputPath = path.join(__dirname, 'public','earrings_nobg.png');
+
+//remove background using rembg
+exec(`rembg i "${inputPath}" "${outputPath}"`, (error, stdout, stderr) => {
+    if (error) {
+        console.error(`Error executing rembg: ${error.message}`);
+        return;
+    }
+    else{
+        console.log('background removed successfully!');
+    }
+});
 const PORT = process.env.PORT || 3000;
 
 // Middleware

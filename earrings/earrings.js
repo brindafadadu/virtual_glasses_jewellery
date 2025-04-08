@@ -3,10 +3,9 @@ const canvasElement = document.getElementById('canvas');
 const canvasCtx = canvasElement.getContext('2d');
 
 const jewlImage = new Image();
-jewlImage.src = 'earrings.png'; 
+jewlImage.src = './public/earrings_nobg.png'; 
 
 let inti_noseX = null;
-
 
 function onResults(results) {
     canvasCtx.save();
