@@ -9,13 +9,21 @@
    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
-
-  <script defer src="earrings.js"></script> 
 </head>
- <body>
- 
-    <video id="video" autoplay muted></video>
-    <canvas id="canvas"></canvas>
+<body>
+  <div class="container">
+    <div class="video-container">
+      <video id="video" autoplay muted></video>
+      <canvas id="canvas"></canvas>
+    </div>
+    
+    <div id="earring-selector" class="earring-selector">
+      <h3>Select Earrings</h3>
+      <!-- Earring options will be added here dynamically -->
+    </div>
+  </div>
 
+  <script src="earrings.js"></script>
+  <script src="app.js"></script>
 </body> 
 </html>

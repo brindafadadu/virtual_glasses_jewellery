@@ -3,9 +3,13 @@ const canvasElement = document.getElementById('canvas');
 const canvasCtx = canvasElement.getContext('2d');
 
 const jewlImage = new Image();
-jewlImage.src = './public/earrings_nobg.png'; 
+jewlImage.src = './public/earrings.png'; 
 
 let inti_noseX = null;
+
+window.selectEarring = function(imageUrl) {
+    jewlImage.src = earring.processedImageUrl; // Update the source of the earring image
+}
 
 function onResults(results) {
     canvasCtx.save();
