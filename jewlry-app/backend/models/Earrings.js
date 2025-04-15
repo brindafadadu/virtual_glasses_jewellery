@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const EarringSchema = new mongoose.Schema({
   name: String,
-  originalimageUrl: String,
+  originalImageUrl: String,
   processedImageUrl: String, 
 });
 

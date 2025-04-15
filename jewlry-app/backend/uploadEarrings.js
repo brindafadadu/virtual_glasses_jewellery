@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 const path = require('path');
 const fs = require('fs');
-const { removeBackground } = require('../utils/imageProcessor');
+const { removeBackground } = require('./utils/imageProcessor');
 
 // MongoDB connection string
 const mongoUri = 'mongodb+srv://brinda1104:hi731yx@jewlry-try-on.6ofclhq.mongodb.net/';
@@ -24,7 +24,7 @@ const earrings = [
   },
   {
     name: 'Green Studs',
-    filename: 'green_earrings.png'
+    filename: 'green_earrings.jpg'
   }
   // Add more earrings as needed
 ];
@@ -48,7 +48,7 @@ mongoose.connect(mongoUri, {
 async function processAndAddEarrings() {
   try {
     // Create directory for processed images if it doesn't exist
-    const processedDir = path.join(__dirname, '..', 'public', 'images', 'processed');
+    const processedDir = path.join(__dirname, 'public', 'images', 'processed');
     if (!fs.existsSync(processedDir)) {
       fs.mkdirSync(processedDir, { recursive: true });
     }
@@ -57,7 +57,7 @@ async function processAndAddEarrings() {
       console.log(`Processing ${earring.name}...`);
       
       // Set paths
-      const originalPath = path.join(__dirname, '..', 'public', 'images', earring.filename);
+      const originalPath = path.join(__dirname, 'public', 'images', earring.filename);
       const outputPath = path.join(processedDir, `nobg_${earring.filename}`);
       
       // Check if original image exists

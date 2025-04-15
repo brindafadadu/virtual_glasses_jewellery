@@ -3,11 +3,11 @@ const canvasElement = document.getElementById('canvas');
 const canvasCtx = canvasElement.getContext('2d');
 
 const jewlImage = new Image();
-jewlImage.src = './public/earrings.png'; 
+//jewlImage.src = 'backend/public/earrings.png'; 
 
 let inti_noseX = null;
 
-window.selectEarring = function(imageUrl) {
+window.selectEarring = function(earring) {
     jewlImage.src = earring.processedImageUrl; // Update the source of the earring image
 }
 

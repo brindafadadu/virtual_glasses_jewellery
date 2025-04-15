@@ -1,17 +1,18 @@
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
 const express = require('express');
 const {exec} = require('child_process');
-const path = require('path');
+
 const cors = require('cors');
 const multer = require('multer');
 const fs = require('fs');
 const mongoose = require('mongoose');
-const earringsRoutes = require('./routes/earringsRoutes');  
+const earringsRoutes = require('./routes/earringRoutes');  
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const mongoUri = 'mongodb+srv://brinda1104:hi731yx@jewlry-try-on.6ofclhq.mongodb.net/';
+//const mongoUri = 'mongodb+srv://brinda1104:hi731yx@jewlry-try-on.6ofclhq.mongodb.net/';
 
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
