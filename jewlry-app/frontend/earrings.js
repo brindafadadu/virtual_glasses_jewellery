@@ -24,7 +24,7 @@ function onResults(results) {
             }
 
             let noseOffset = nose.x - inti_noseX;
-            let headturn = 0.04 // sensitivity limit
+            let headturn = 0.02 // sensitivity limit
 
 
             // Calculate earring size and position

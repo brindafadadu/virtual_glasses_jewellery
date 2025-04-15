@@ -3,9 +3,14 @@ const express = require('express');
 const {exec} = require('child_process');
 const path = require('path');
 const cors = require('cors');
+const multer = require('multer');
+const fs = require('fs');
 
 const app = express();
 
+const upload = multer({ dest: 'uploads/' });
+
+app.use(express.static(path.join(__dirname, 'uploads')));
 const inputPath = path.join(__dirname, 'public', 'earrings2.png');
 const outputPath = path.join(__dirname, 'public','earrings_nobg.png');
 
