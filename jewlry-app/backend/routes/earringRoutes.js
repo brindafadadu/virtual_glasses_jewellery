@@ -1,4 +1,5 @@
 const express = require("express");
+const multer = require("multer");
 const Earring = require("../models/Earrings");
 const {removeBackground} = require("../utils/imageProcessor");
 const path = require("path");
@@ -6,15 +7,78 @@ const fs = require("fs");
 
 const router = express.Router();
 
-router.post("/api/earrings", async (req, res) => {
-  try {
-    const { name, imagePath } = req.body;
+// Ensure proper multer configuration
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    // Create the uploads directory if it doesn't exist
+    const uploadDir = path.join(__dirname, '..', 'public', 'images', 'uploads');
     
-    // Check if image exists
-    const originalPath = path.join(__dirname, "..", "public", "images", imagePath);
-    if (!fs.existsSync(originalPath)) {
-      return res.status(404).json({ error: "Image file not found" });
+    console.log(`Upload directory: ${uploadDir}`);
+    
+    if (!fs.existsSync(uploadDir)) {
+      console.log(`Creating upload directory: ${uploadDir}`);
+      try {
+        fs.mkdirSync(uploadDir, { recursive: true });
+        console.log(`Created directory: ${uploadDir}`);
+      } catch (err) {
+        console.error(`Error creating directory ${uploadDir}:`, err);
+        return cb(err);
+      }
     }
+    
+    cb(null, uploadDir);
+  },
+  filename: function(req, file, cb) {
+    // Generate a unique filename with timestamp
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const extension = path.extname(file.originalname);
+    const filename = 'earring-' + uniqueSuffix + extension;
+    
+    console.log(`Generated filename: ${filename}`);
+    cb(null, filename);
+  }
+});
+
+const fileFilter = function(req, file, cb) {
+  // Accept only image files
+  const filetypes = /jpeg|jpg|png|gif/;
+  const mimetype = filetypes.test(file.mimetype);
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  
+  console.log(`File upload attempt: ${file.originalname}`);
+  console.log(`Mimetype: ${file.mimetype}, valid: ${mimetype}`);
+  console.log(`Extension: ${path.extname(file.originalname).toLowerCase()}, valid: ${extname}`);
+  
+  if (mimetype && extname) {
+    return cb(null, true);
+  }
+  cb(new Error('Only image files are allowed!'));
+};
+
+const upload = multer({ 
+  storage: storage,
+  fileFilter: fileFilter,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB max file size
+  }
+});
+router.post('/api/upload', upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+    
+    const uploadedFile = req.file || 'Uploaded Earring';
+    const filename = uploadedFile.filename;
+    const originalPath = uploadedFile.path;
+
+    const earringName = req.body.name || 'Uploaded Earring';
+
+    console.log("File uploaded: ", {
+      name: earringName,
+      filename: filename,
+      originalPath: originalPath
+    });
     
     // Create directory for processed images if it doesn't exist
     const processedDir = path.join(__dirname, "..", "public", "images", "processed");
@@ -23,14 +87,13 @@ router.post("/api/earrings", async (req, res) => {
     }
     
     // Set output path for processed image
-    const filename = path.basename(imagePath);
     const outputPath = path.join(processedDir, `nobg_${filename}`);
     
     // Process the image
     await removeBackground(originalPath, outputPath);
     
     // Create relative paths for storage in the database
-    const originalRelativePath = `/images/${imagePath}`;
+    const originalRelativePath = `/images/uploads/${imagePath}`;
     const processedRelativePath = `/images/processed/nobg_${filename}`;
     
     // Save to database

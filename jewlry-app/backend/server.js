@@ -8,6 +8,7 @@ const multer = require('multer');
 const fs = require('fs');
 const mongoose = require('mongoose');
 const earringsRoutes = require('./routes/earringRoutes');  
+//const uploadRoutes = require('./routes/uploadRoutes'); // Import the upload routes
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -25,7 +26,9 @@ app.use(cors());
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, '../frontend')));
-app.use('/images', express.static(path.join(__dirname, 'public/images')));
+app.use('/images', express.static(path.join(__dirname, 'public', 'images')));
+app.use('/images/uploads', express.static(path.join(__dirname, 'public', 'images', 'uploads')));
+app.use('/images/processed', express.static(path.join(__dirname, 'public', 'images', 'processed')));
 
 // //background removal using rembg
 // const inputPath = path.join(__dirname, 'public', 'earrings2.png');

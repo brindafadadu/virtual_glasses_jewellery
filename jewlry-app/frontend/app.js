@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Fetch earrings from the backend
     fetchEarrings();
+    setupUploadButton();
   });
   
+
   async function fetchEarrings() {
     try {
       const response = await fetch('/api/earrings');
@@ -18,6 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
   function displayEarringSelector(earrings) {
     const selectorContainer = document.getElementById('earring-selector');
     
+    const heading = selectorContainer.querySelector('h3');
+    const uploadform = document.getElementById('upload-form');
+
+    selectorContainer.innerHTML = '';
+   selectorContainer.appendChild(heading);
+
     // Create buttons for each earring
     earrings.forEach(earring => {
       const button = document.createElement('button');
@@ -34,4 +42,92 @@ document.addEventListener('DOMContentLoaded', () => {
       
       selectorContainer.appendChild(button);
     });
+
+    selectorContainer.appendChild(uploadform);
   }
+
+  function setupUploadButton() {
+    const form = document.getElementById('earring-upload-form');
+    const statusDiv = document.getElementById('upload-status');
+    
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      
+      const formData = new FormData(form);
+      const nameInput = document.getElementById('earring-name');
+      const fileInput = document.getElementById('earring-image');
+      
+      // Show loading status
+      statusDiv.className = '';
+      statusDiv.textContent = 'Uploading image...';
+      
+      try {
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Upload failed');
+        }
+        
+        const result = await response.json();
+        
+        // Show success message
+        statusDiv.textContent = 'Earring uploaded successfully!';
+        statusDiv.className = 'status-success';
+        
+        // Reset form
+        nameInput.value = '';
+        fileInput.value = '';
+        
+        // Refresh earring list
+        fetchEarrings();
+        
+      } catch (error) {
+        console.error('Error uploading earring:', error);
+        statusDiv.textContent = `Error: ${error.message}`;
+        statusDiv.className = 'status-error';
+      }
+
+      // Show loading status
+    statusDiv.className = '';
+    statusDiv.textContent = 'Uploading image...';
+    
+    try {
+      console.log('Sending upload request to server...');
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      });
+      
+      console.log('Server response status:', response.status);
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Upload error response:', errorData);
+        throw new Error(errorData.error || 'Upload failed');
+      }
+      
+      const result = await response.json();
+      console.log('Upload success response:', result);
+      
+      // Show success message
+      statusDiv.textContent = 'Earring uploaded successfully!';
+      statusDiv.className = 'status-success';
+      
+      // Reset form
+      nameInput.value = '';
+      fileInput.value = '';
+      
+      // Refresh earring list
+      fetchEarrings();
+      
+    } catch (error) {
+      console.error('Error uploading earring:', error);
+      statusDiv.textContent = `Error: ${error.message}`;
+      statusDiv.className = 'status-error';
+    }
+  });
+}  
