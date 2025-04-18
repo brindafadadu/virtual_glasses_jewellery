@@ -60,41 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Show loading status
       statusDiv.className = '';
       statusDiv.textContent = 'Uploading image...';
-      
-      try {
-        const response = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData
-        });
-        
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || 'Upload failed');
-        }
-        
-        const result = await response.json();
-        
-        // Show success message
-        statusDiv.textContent = 'Earring uploaded successfully!';
-        statusDiv.className = 'status-success';
-        
-        // Reset form
-        nameInput.value = '';
-        fileInput.value = '';
-        
-        // Refresh earring list
-        fetchEarrings();
-        
-      } catch (error) {
-        console.error('Error uploading earring:', error);
-        statusDiv.textContent = `Error: ${error.message}`;
-        statusDiv.className = 'status-error';
-      }
-
-      // Show loading status
-    statusDiv.className = '';
-    statusDiv.textContent = 'Uploading image...';
-    
+     
     try {
       console.log('Sending upload request to server...');
       const response = await fetch('/api/upload', {

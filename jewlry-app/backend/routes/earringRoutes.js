@@ -68,7 +68,7 @@ router.post('/api/upload', upload.single('image'), async (req, res) => {
       return res.status(400).json({ error: 'No file uploaded' });
     }
     
-    const uploadedFile = req.file || 'Uploaded Earring';
+    const uploadedFile = req.file;
     const filename = uploadedFile.filename;
     const originalPath = uploadedFile.path;
 
@@ -93,12 +93,12 @@ router.post('/api/upload', upload.single('image'), async (req, res) => {
     await removeBackground(originalPath, outputPath);
     
     // Create relative paths for storage in the database
-    const originalRelativePath = `/images/uploads/${imagePath}`;
+    const originalRelativePath = `/images/uploads/${filename}`;  // Fixed: using filename instead of imagePath
     const processedRelativePath = `/images/processed/nobg_${filename}`;
     
     // Save to database
     const newEarring = new Earring({
-      name,
+      name: earringName,  // Fixed: using earringName instead of name
       originalImageUrl: originalRelativePath,
       processedImageUrl: processedRelativePath
     });
@@ -106,6 +106,7 @@ router.post('/api/upload', upload.single('image'), async (req, res) => {
     await newEarring.save();
     res.status(201).json(newEarring);
   } catch (err) {
+    console.error("Upload error:", err);
     res.status(500).json({ error: err.message });
   }
 });

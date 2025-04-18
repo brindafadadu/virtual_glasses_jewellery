@@ -35,7 +35,7 @@ function onResults(results) {
             const earringSize = Math.min(canvasElement.width, canvasElement.height) * 0.13; 
 
             // Increase horizontal separation between earrings
-            const horizontalSeparation = earringSize * 0.37; // Adjust this multiplier to increase/decrease gap
+            const horizontalSeparation = earringSize * 0.3; // Adjust this multiplier to increase/decrease gap
 
             // Left earring - positioned on left ear base with additional horizontal offset
             const leftX = leftEarBase.x * canvasElement.width - (earringSize / 2) - horizontalSeparation;
