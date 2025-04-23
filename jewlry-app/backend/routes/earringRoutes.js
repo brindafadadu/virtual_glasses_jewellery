@@ -7,7 +7,7 @@ const fs = require("fs");
 
 const router = express.Router();
 
-// Ensure proper multer configuration
+// Proper multer configuration
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
     // Create the uploads directory if it doesn't exist
@@ -80,7 +80,6 @@ router.post('/api/upload', upload.single('image'), async (req, res) => {
       originalPath: originalPath
     });
     
-    // Create directory for processed images if it doesn't exist
     const processedDir = path.join(__dirname, "..", "public", "images", "processed");
     if (!fs.existsSync(processedDir)) {
       fs.mkdirSync(processedDir, { recursive: true });
@@ -98,7 +97,7 @@ router.post('/api/upload', upload.single('image'), async (req, res) => {
     
     // Save to database
     const newEarring = new Earring({
-      name: earringName,  // Fixed: using earringName instead of name
+      name: earringName,
       originalImageUrl: originalRelativePath,
       processedImageUrl: processedRelativePath
     });

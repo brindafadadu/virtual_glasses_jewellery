@@ -1,4 +1,3 @@
-// simple-cleanup.js
 const mongoose = require('mongoose');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
@@ -15,7 +14,7 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 
 // Import the Earring model
-const Earring = require('./models/Earrings');
+const Earring = require('../models/Earrings');
 
 // Main function to remove duplicates
 async function cleanupDuplicates() {

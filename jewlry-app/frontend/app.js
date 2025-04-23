@@ -78,8 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const result = await response.json();
       console.log('Upload success response:', result);
-      
-      // Show success message
+    
       statusDiv.textContent = 'Earring uploaded successfully!';
       statusDiv.className = 'status-success';
       

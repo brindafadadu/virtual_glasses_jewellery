@@ -28,7 +28,7 @@ function onResults(results) {
             }
 
             let noseOffset = nose.x - inti_noseX;
-            let headturn = 0.02 // sensitivity limit
+            let headturn = 0.02 // Sensitivity limit
 
 
             // Calculate earring size and position
@@ -37,16 +37,16 @@ function onResults(results) {
             // Increase horizontal separation between earrings
             const horizontalSeparation = earringSize * 0.3; // Adjust this multiplier to increase/decrease gap
 
-            // Left earring - positioned on left ear base with additional horizontal offset
+            // Left earring positioned on left ear base with additional horizontal offset
             const leftX = leftEarBase.x * canvasElement.width - (earringSize / 2) - horizontalSeparation;
             const leftY = leftEarBase.y * canvasElement.height - (earringSize / 2);
 
-            // Right earring - positioned on right ear base with additional horizontal offset
+            // Right earring positioned on right ear base with additional horizontal offset
             const rightX = rightEarBase.x * canvasElement.width - (earringSize / 2) + horizontalSeparation;
             const rightY = rightEarBase.y * canvasElement.height - (earringSize / 2);
 
             if(noseOffset < -headturn){
-                //head turned right so hide the left earring
+                //Head turned right so hide the left earring
                 canvasCtx.drawImage(
                     jewlImage,
                     rightX,
@@ -57,7 +57,7 @@ function onResults(results) {
             }
 
             else if (noseOffset>headturn){
-                //head turned left so hide the right earring
+                // Head turned left so hide the right earring
                 canvasCtx.drawImage(
                     jewlImage,
                     leftX,
@@ -67,7 +67,7 @@ function onResults(results) {
                 );
             }
 
-            // head facing forward draw both earrings
+            // Head facing forward draw both earrings
             else{ 
                 canvasCtx.drawImage(
                 jewlImage,

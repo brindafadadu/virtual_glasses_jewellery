@@ -8,12 +8,11 @@ const multer = require('multer');
 const fs = require('fs');
 const mongoose = require('mongoose');
 const earringsRoutes = require('./routes/earringRoutes');  
-//const uploadRoutes = require('./routes/uploadRoutes'); // Import the upload routes
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-//const mongoUri = 'mongodb+srv://brinda1104:hi731yx@jewlry-try-on.6ofclhq.mongodb.net/';
 
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -29,20 +28,6 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 app.use('/images', express.static(path.join(__dirname, 'public', 'images')));
 app.use('/images/uploads', express.static(path.join(__dirname, 'public', 'images', 'uploads')));
 app.use('/images/processed', express.static(path.join(__dirname, 'public', 'images', 'processed')));
-
-// //background removal using rembg
-// const inputPath = path.join(__dirname, 'public', 'earrings2.png');
-// const outputPath = path.join(__dirname, 'public','earrings_nobg.png');
-
-// exec(`rembg i "${inputPath}" "${outputPath}"`, (error, stdout, stderr) => {
-//     if (error) {
-//         console.error(`Error executing rembg: ${error.message}`);
-//         return;
-//     }
-//     else{
-//         console.log('background removed successfully!');
-//     }
-// });
 
 //using earring routes
 app.use(earringsRoutes);

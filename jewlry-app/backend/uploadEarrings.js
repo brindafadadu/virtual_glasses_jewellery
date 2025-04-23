@@ -1,4 +1,4 @@
-// scripts/addEarrings.js
+
 const mongoose = require('mongoose');
 const path = require('path');
 const fs = require('fs');
@@ -7,7 +7,7 @@ const { removeBackground } = require('./utils/imageProcessor');
 // MongoDB connection string
 const mongoUri = 'mongodb+srv://brinda1104:hi731yx@jewlry-try-on.6ofclhq.mongodb.net/';
 
-// Define MongoDB schema
+// MongoDB schema
 const EarringSchema = new mongoose.Schema({
   name: String,
   originalImageUrl: String,
@@ -26,7 +26,6 @@ const earrings = [
     name: 'Green Studs',
     filename: 'green_earrings.jpg'
   }
-  // Add more earrings as needed
 ];
 
 // Connect to MongoDB
@@ -47,7 +46,6 @@ mongoose.connect(mongoUri, {
 // Function to process images and add to database
 async function processAndAddEarrings() {
   try {
-    // Create directory for processed images if it doesn't exist
     const processedDir = path.join(__dirname, 'public', 'images', 'processed');
     if (!fs.existsSync(processedDir)) {
       fs.mkdirSync(processedDir, { recursive: true });
